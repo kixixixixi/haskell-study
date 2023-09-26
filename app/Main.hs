@@ -1,6 +1,10 @@
-module Main (main) where
+main :: IO()
 
-import Lib
+fib :: Int -> Integer
+fib n = fibs !! n
 
-main :: IO ()
-main = someFunc
+fibs :: [Integer]
+fibs = 0:1:zipWith (+) fibs (tail fibs)
+
+main = do
+    print $ fib 11
