@@ -1,10 +1,18 @@
-main :: IO()
+{-# LANGUAGE OverloadedStrings #-}
+import Network.Wai
+import Network.HTTP.Types
+import Network.Wai.Handler.Warp (run)
 
-fib :: Int -> Integer
-fib n = fibs !! n
 
-fibs :: [Integer]
-fibs = 0:1:zipWith (+) fibs (tail fibs)
+app :: Application
+app _ respond = do
+    putStrLn "I've done some IO here"
+    respond $ responseLBS
+        status200
+        [("Content-Type", "text/plain")]
+        "Hello, world"
 
+main :: IO ()
 main = do
-    print $ fib 11
+    putStrLn $ "http://localhost:8080/"
+    run 8080 app
