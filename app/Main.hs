@@ -9,8 +9,8 @@ app _ respond = do
     putStrLn "I've done some IO here"
     respond $ responseLBS
         status200
-        [("Content-Type", "text/plain")]
-        "Hello, world"
+        [("Content-Type", "application/json")]
+        "{\"message\":\"Hello, world\"}"
 
 main :: IO ()
 main = do
