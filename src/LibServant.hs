@@ -16,6 +16,10 @@ data Message = Message
   { message :: String
   } deriving (Eq, Show, Generic)
 
+-- Eq: 同値判定
+-- Show: 文字列変換
+-- Generic: DeriveGeneric
+
 instance ToJSON Message
 
 data User = User
