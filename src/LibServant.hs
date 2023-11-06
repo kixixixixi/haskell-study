@@ -6,11 +6,17 @@ module LibServant
     ( runServant
     ) where
 
-import Servant(serve, Proxy(..), Server, JSON, Get, (:>))
+import Servant
 import Data.Aeson(ToJSON)
 import GHC.Generics(Generic)
 import Network.Wai(Application)
 import Network.Wai.Handler.Warp(run)
+
+data Message = Message
+  { message :: String
+  } deriving (Eq, Show, Generic)
+
+instance ToJSON Message
 
 data User = User
   { name :: String
@@ -20,21 +26,27 @@ data User = User
 
 instance ToJSON User
 
+okMessage :: Message
+okMessage = Message "ok"
 
 users :: [User]
 users =
   [ User "kixixixixi" 33 "kixixixixi@gmail.com" 
   ]
-type UserAPI = "users" :> Get '[JSON] [User]
 
-server :: Server UserAPI
-server = return users
 
-userAPI :: Proxy UserAPI
-userAPI = Proxy
+type TestAPI = Get '[JSON] Message
+  :<|> "users" :> Get '[JSON] [User]  
+
+server :: Server TestAPI
+server = return okMessage
+  :<|> return users
+
+testAPI :: Proxy TestAPI
+testAPI = Proxy
 
 app :: Application
-app = serve userAPI server
+app = serve testAPI server
 
 
 
